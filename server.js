@@ -160,6 +160,8 @@ const HOST_HTML = `<!DOCTYPE html><html lang="ru"><head><meta charset="utf-8">
 .ttl{font-size:clamp(40px,5vw,72px);color:#ffcc33;margin:0 0 28px}
 .sub{font-size:20px;opacity:.85;margin:8px 0 0}
 #draw{margin:28px 0 16px}
+.ig{position:fixed;right:20px;bottom:20px;width:48px;height:48px;display:flex;align-items:center;justify-content:center;border-radius:14px;color:#fff;opacity:.6;transition:opacity .2s}
+.ig:hover,.ig:focus-visible{opacity:1;outline:none;background:#ffffff1a}
 #reset{margin-top:14px;background:transparent;color:#fff;border:2px solid #fff6;font-size:18px;padding:14px 28px;min-height:44px}
 #msg{min-height:28px;font-size:20px}
 @media(max-width:760px){.wrap{grid-template-columns:1fr;gap:24px}.qr canvas,.qr img{width:min(80vw,60vh)}}
@@ -175,6 +177,7 @@ const HOST_HTML = `<!DOCTYPE html><html lang="ru"><head><meta charset="utf-8">
     <button id="reset">Сбросить победителей</button>
   </div>
 </div>
+<a class="ig" href="https://www.instagram.com/vladimir_zubelik/" target="_blank" rel="noopener" aria-label="Instagram vladimir_zubelik"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="0.6" fill="currentColor"></circle></svg></a>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>{
 const key=new URLSearchParams(location.search).get('key');
