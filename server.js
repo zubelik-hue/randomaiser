@@ -53,6 +53,7 @@ const server = http.createServer((req, res) => {
   const p = url.pathname;
   const isHost = url.searchParams.get('key') === HOST_KEY;
 
+  if (p === '/ping') { res.writeHead(204); return res.end(); }
   if (p === '/' ) { res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' }); return res.end(GUEST_HTML); }
   if (p === '/host') {
     if (!isHost) { res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' }); return res.end('Нужен правильный ключ: /host?key=...'); }
@@ -132,6 +133,7 @@ document.getElementById('go').onclick=()=>{
   joined=true;
   try{ctx=new (window.AudioContext||window.webkitAudioContext)();ctx.resume()}catch(e){}
   vib(60);keepAwake();waiting();
+  setInterval(()=>fetch('/ping').catch(()=>{}),240000);
   const es=new EventSource('/events?id='+encodeURIComponent(id));
   es.addEventListener('hello',e=>{const d=JSON.parse(e.data);if(d.won)show('win','Вы победили!','Подойдите к ведущему');else waiting()});
   es.addEventListener('spin',()=>{show('spin','Крутим…','');vib([40,80,40,80,40])});
@@ -146,17 +148,17 @@ document.getElementById('go').onclick=()=>{
 const HOST_HTML = `<!DOCTYPE html><html lang="ru"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>Ведущий</title>
 <style>${BASE_CSS}
-.wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px;align-items:center;max-width:1100px;width:100%}
-.qr{background:#fff;border-radius:24px;padding:20px;display:inline-block}
-.qr canvas,.qr img{display:block;width:min(340px,70vw);height:auto}
-.url{font-size:15px;opacity:.7;margin-top:10px;word-break:break-all}
+.wrap{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:56px;align-items:center;max-width:1700px;width:100%}
+.qr{background:#fff;border-radius:28px;padding:24px;display:inline-block}
+.qr canvas,.qr img{display:block;width:min(78vh,55vw);height:auto}
+.url{font-size:20px;opacity:.7;margin-top:10px;word-break:break-all}
 .n{font-size:clamp(56px,10vw,110px);font-weight:800;line-height:1}
 #draw{background:#ffcc33;color:#1b1035;font-size:clamp(24px,4vw,34px);padding:34px 64px;margin:24px 0 16px;box-shadow:0 10px 0 #b88a00}
 #draw:active{transform:translateY(6px);box-shadow:0 4px 0 #b88a00}
 #draw:disabled{opacity:.5;cursor:default}
 #reset{background:transparent;color:#fff;border:2px solid #fff6;font-size:15px;padding:12px 22px;min-height:44px}
 #msg{min-height:28px;font-size:20px}
-@media(max-width:760px){.wrap{grid-template-columns:1fr;gap:24px}}
+@media(max-width:760px){.wrap{grid-template-columns:1fr;gap:24px}.qr canvas,.qr img{width:min(80vw,60vh)}}
 </style></head><body>
 <div class="wrap">
   <div><div class="qr" id="qr"></div><div class="url" id="url"></div></div>
@@ -172,8 +174,9 @@ const HOST_HTML = `<!DOCTYPE html><html lang="ru"><head><meta charset="utf-8">
 const key=new URLSearchParams(location.search).get('key');
 const guestUrl=location.origin+'/';
 document.getElementById('url').textContent=guestUrl;
-try{new QRCode(document.getElementById('qr'),{text:guestUrl,width:340,height:340,correctLevel:QRCode.CorrectLevel.M})}catch(e){document.getElementById('qr').textContent='QR не загрузился — откройте адрес ниже'}
+try{new QRCode(document.getElementById('qr'),{text:guestUrl,width:1024,height:1024,correctLevel:QRCode.CorrectLevel.M})}catch(e){document.getElementById('qr').textContent='QR не загрузился — откройте адрес ниже'}
 const $=i=>document.getElementById(i),btn=$('draw'),msg=$('msg');
+setInterval(()=>fetch('/ping').catch(()=>{}),240000);
 const es=new EventSource('/host-events?key='+encodeURIComponent(key));
 es.addEventListener('stats',e=>{const d=JSON.parse(e.data);$('n').textContent=d.online;$('el').textContent=d.eligible});
 es.addEventListener('spin',()=>{msg.textContent='Крутим…';btn.disabled=true});
