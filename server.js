@@ -153,20 +153,26 @@ const HOST_HTML = `<!DOCTYPE html><html lang="ru"><head><meta charset="utf-8">
 .qr canvas,.qr img{display:block;width:min(78vh,55vw);height:auto}
 .url{font-size:20px;opacity:.7;margin-top:10px;word-break:break-all}
 .n{font-size:clamp(56px,10vw,110px);font-weight:800;line-height:1}
-#draw{background:#ffcc33;color:#1b1035;font-size:clamp(24px,4vw,34px);padding:34px 64px;margin:24px 0 16px;box-shadow:0 10px 0 #b88a00}
+#draw{background:#ffcc33;color:#1b1035;font-size:clamp(24px,4vw,34px);padding:34px 64px;box-shadow:0 10px 0 #b88a00}
 #draw:active{transform:translateY(6px);box-shadow:0 4px 0 #b88a00}
 #draw:disabled{opacity:.5;cursor:default}
-#reset{background:transparent;color:#fff;border:2px solid #fff6;font-size:15px;padding:12px 22px;min-height:44px}
+.side{display:flex;flex-direction:column;align-items:center;text-align:center}
+.ttl{font-size:clamp(40px,5vw,72px);color:#ffcc33;margin:0 0 28px}
+.sub{font-size:20px;opacity:.85;margin:8px 0 0}
+#draw{margin:28px 0 16px}
+#reset{margin-top:14px;background:transparent;color:#fff;border:2px solid #fff6;font-size:18px;padding:14px 28px;min-height:44px}
 #msg{min-height:28px;font-size:20px}
 @media(max-width:760px){.wrap{grid-template-columns:1fr;gap:24px}.qr canvas,.qr img{width:min(80vw,60vh)}}
 </style></head><body>
 <div class="wrap">
   <div><div class="qr" id="qr"></div></div>
-  <div>
-    <div class="n" id="n">0</div><p>гостей на странице · <span id="el">0</span> могут выиграть</p>
+  <div class="side">
+    <h1 class="ttl">Тест на удачу</h1>
+    <div class="n" id="n">0</div>
+    <div class="sub">гостей на странице · <span id="el">0</span> могут выиграть</div>
     <button id="draw">Выбрать победителя</button>
     <div id="msg"></div>
-    <p style="margin-top:18px"><button id="reset">Сбросить победителей</button></p>
+    <button id="reset">Сбросить победителей</button>
   </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
