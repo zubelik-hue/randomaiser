@@ -161,7 +161,7 @@ const HOST_HTML = `<!DOCTYPE html><html lang="ru"><head><meta charset="utf-8">
 @media(max-width:760px){.wrap{grid-template-columns:1fr;gap:24px}.qr canvas,.qr img{width:min(80vw,60vh)}}
 </style></head><body>
 <div class="wrap">
-  <div><div class="qr" id="qr"></div><div class="url" id="url"></div></div>
+  <div><div class="qr" id="qr"></div></div>
   <div>
     <div class="n" id="n">0</div><p>гостей на странице · <span id="el">0</span> могут выиграть</p>
     <button id="draw">Выбрать победителя</button>
@@ -173,8 +173,7 @@ const HOST_HTML = `<!DOCTYPE html><html lang="ru"><head><meta charset="utf-8">
 <script>{
 const key=new URLSearchParams(location.search).get('key');
 const guestUrl=location.origin+'/';
-document.getElementById('url').textContent=guestUrl;
-try{new QRCode(document.getElementById('qr'),{text:guestUrl,width:1024,height:1024,correctLevel:QRCode.CorrectLevel.M})}catch(e){document.getElementById('qr').textContent='QR не загрузился — откройте адрес ниже'}
+try{new QRCode(document.getElementById('qr'),{text:guestUrl,width:1024,height:1024,correctLevel:QRCode.CorrectLevel.M})}catch(e){document.getElementById('qr').textContent='QR не загрузился. Адрес для гостей: '+guestUrl}
 const $=i=>document.getElementById(i),btn=$('draw'),msg=$('msg');
 setInterval(()=>fetch('/ping').catch(()=>{}),240000);
 const es=new EventSource('/host-events?key='+encodeURIComponent(key));
